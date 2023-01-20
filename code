@@ -1,0 +1,158 @@
+import java.util.*;
+import static java.lang.Math.*;
+class Main {
+    public static void main(String args[]) {
+        Scanner in = new Scanner(System.in);
+
+        /*
+        double y, f, G;
+        System.out.println("Введите переменную y");
+        y = in.nextDouble();
+        System.out.println("Введите переменную f");
+        f = in.nextDouble();
+
+        G = (exp(2*y)+sin(f))/(log(3.8*y+f));
+        System.out.printf("G = %.6f", G);
+        System.out.println();
+
+        double x, a, c, L, L1, L2, L3;
+        System.out.println("Введите переменную x");
+        x = in.nextDouble();
+        System.out.println("Введите переменную a");
+        a = in.nextDouble();
+        System.out.println("Введите переменную c");
+        c = in.nextDouble();
+
+        L = (sqrt(exp(x)-pow(cos(pow(x, 2)*pow(a, 2)),4))+pow(atan(a-pow(x,5)),4)) /
+                (Math.E*sqrt(abs(a+x*pow(c, 4))));
+        System.out.printf("L = %.6f", L);
+        */
+
+        /*
+        double S, t_1, t_2, U_k, U_r;
+        System.out.print("Введите расстояние между пунктами: ");
+        S = in.nextDouble();
+        System.out.print("Ввидете время по течению: ");
+        t_1 = in.nextDouble();
+        System.out.print("Ввидете время против течения: ");
+        t_2 = in.nextDouble();
+
+        if (S >= 0 && t_1 > 0 && t_2 > 0 && t_1 <= t_2){
+
+            U_k = S / (2 * t_1) + S / (2 * t_2);
+            U_r = S / (2 * t_1) - S / (2 * t_2);
+
+            System.out.printf("Скорость катера = %.1f", U_k);
+            System.out.println();
+            System.out.printf("Скорость реки = %.1f", U_r);
+        }
+        else
+            System.out.print("Некорректные данные, проверте следующие условия:\n" +
+                    "  1 - Время и расстояние не могут быть отрицательными,\n" +
+                    "  2 - Время не может равнятся 0,\n" +
+                    "  3 - Скорость по течению должна быть больше скорости против течения.");
+        */
+
+        /*
+        double R, r, h, S_pp, V;
+        System.out.print("Введите измерения конуса:\n - радиус большего основания = ");
+        R = in.nextDouble();
+        System.out.print(" - радиус меньшего основания = ");
+        r = in.nextDouble();
+        System.out.print(" - высота конуса = ");
+        h = in.nextDouble();
+
+        if (R >= 0 && r >= 0 && h >= 0){
+
+            S_pp = Math.PI * ( (r+R) * sqrt(pow(h,2)+pow(abs(R+r), 2) ) +
+                    pow(r, 2) + pow(R, 2));
+            V = Math.PI * h / 3 * ( pow(r, 2) + pow(R, 2) + r*R );
+
+            System.out.printf("S = %.1f; V = %.1f", S_pp, V);
+        }
+        else
+            System.out.print("Некорректные данные, проверте следующие условия:\n" +
+                    "  1 -  Ни один из параметров не может быть отрицательным.");
+        */
+
+        /*
+        double D_in, E_in, DE_in, input, D, E, DE, output;
+        System.out.print("Введите текущие курсы волют:\n (десятичную часть следует отделять запятой)\n - 1 Доллар = рублей ");
+        D_in = in.nextDouble();
+        System.out.print(" - 1 Евро = рублей ");
+        E_in = in.nextDouble();
+        System.out.print(" - 1 Евро = долларов ");
+        DE_in = in.nextDouble();
+        System.out.print("Вы имеете рублей: ");
+        input = in.nextDouble();
+
+        if (abs(D_in) == D_in && abs(E_in) == E_in && abs(DE_in) == DE_in && abs(input) == input) {
+            System.out.print("Это:\n");
+            D = input/D_in;
+            System.out.printf(" - В Долларах = %.2f\n", D);
+            E = input/E_in;
+            System.out.printf(" - В Евро = %.2f\n", E);
+            DE = input - D / DE_in * E_in;
+            System.out.printf(" - Потери при конвекции Рубли -> Доллары -> Евро -> Рубли = %.2f", DE);
+            if (abs(DE) != DE) {
+                System.out.print("\nПоздравляю, вы в плюсе!");
+            }
+        }
+        else
+            System.out.print("Некорректные данные, проверте следующие условия:\n" +
+                    "  1 -  Ни один из параметров не может быть отрицательным.");
+
+        */
+
+
+        double[][] points = new double[3][3];
+        String[][] ABC_xyz = {{"A", "B", "C"}, {"x", "y", "z"}};
+
+        for (int i = 0; i < 3; i++) {
+            if (i + 1 == 3) {
+                System.out.print("Введите координаты точки проэкцию которой нужно найти:\n");
+            } else {
+                System.out.print("Введите координаты " + (i+1) + " точки:\n");
+            }
+            for (int j = 0; j < 3; j++) {
+                System.out.print(ABC_xyz[0][i] + "_" + ABC_xyz[1][j] + " = ");
+                points[i][j] = in.nextDouble();
+            }
+        }
+
+        System.out.println("Координаты искомой точки:");
+        double C[] = Projection_point(points);
+        for (int i = 0; i < 3; i++) {
+            System.out.println(ABC_xyz[1][i] + " = " + C[i]);
+        }
+
+    }
+
+
+    public static double[] Projection_point(double[][] points) {
+        //  зная нормальный вектор (вектор прямой) и координаты исходной точки "С"
+        //  (1) составляем уравнение плоскости перпендикулярной прямой и проходящей через "С"
+        //
+        //  из канонического уравнения прямой
+        //  (2) составляем параметрическое уравнение прямой
+        //
+        //  подставляем ур-я (2) в ур-е (1)
+        //  находим коофициент lu - лямда, который потом подставляем в (2)
+        //  и получаем искомые координаты
+
+        double lu, projection_coordinates[] = new double[3];
+
+        lu = (  (points[2][0] - points[0][0]) * (points[1][0] - points[0][0])  +
+                (points[2][1] - points[0][1]) * (points[1][1] - points[0][1])  +
+                (points[2][2] - points[0][2]) * (points[1][2] - points[0][2])  )
+                /
+                (  pow(points[1][0] - points[0][0], 2) +       //  преобразованная формула для лямда
+                        pow(points[1][1] - points[0][1], 2) +
+                        pow(points[1][2] - points[0][2], 2)  );
+
+        for (int i = 0; i < 3; i++)
+            projection_coordinates[i] = points[0][i] + (points[1][i] - points[0][i]) * lu;
+
+        return projection_coordinates;
+    }
+}
